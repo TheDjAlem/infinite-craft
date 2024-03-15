@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Craft Recipies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            width: 200px;
+            margin-bottom: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        th.sortable {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search...">
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th class="sortable" onclick="sortTable(0)">Result</th>
+                <th>Combination 1</th>
+                <th>+</th>
+                <th>Combination 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Steam</strong></td>
+                <td>Water</td>
+                <td>+</td>
+                <td>Fire</td>
+            </tr>
+            <tr>
+                <td><strong>Wave</strong></td>
+                <td>Water</td>
+                <td>+</td>
+                <td>Wind</td>
+            </tr>
+            <tr>
+                <td><strong>Lava</strong></td>
+                <td>Earth</td>
+                <td>+</td>
+                <td>Fire</td>
+            </tr>
+            <!-- Add more rows here -->
+        </tbody>
+    </table>
+
+    <script>
+        function sortTable(columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("dataTable");
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        function searchTable() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("dataTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
